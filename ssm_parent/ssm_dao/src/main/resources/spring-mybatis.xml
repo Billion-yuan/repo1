@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/tx
+               http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 1：数据库连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+        <property name="url" value="jdbc:mysql://localhost:3306/itcastmaven?characterEncoding=utf8" />
+        <property name="username" value="root" />
+        <property name="password" value="root" />
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    </bean>
+
+    <!--
+        2：SqlSessionFactoryBean
+    -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--
+            指定数据源
+        -->
+        <property name="dataSource" ref="dataSource" />
+
+        <!--
+            指定别名配置
+        -->
+        <property name="typeAliasesPackage" value="com.itheima.ssm.domain" />
+    </bean>
+
+
+    <!--
+       3：Dao层接口扫描，让Dao被spring管理
+    -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定Dao接口的包-->
+        <property name="basePackage" value="com.itheima.ssm.dao" />
+    </bean>
+</beans>
